@@ -6,7 +6,7 @@ function Content() {
 
   return (
     <Container>
-      <div>This is a {page.pathname.replace("/", "")}</div>
+      <div>This is {page.pathname.replace("/", "")}</div>
     </Container>
   );
 }
