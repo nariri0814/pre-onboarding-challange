@@ -8,13 +8,15 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
   return (
     <BrowserRouter>
-      <Login setIsLogged={setIsLogged} />
-      {/* <Layout>
+      {/* {!isLogged ? (
+        <Login setIsLogged={setIsLogged} />
+      ) : ( */}
+      <Layout>
         <Routes>
           <Route element={<Home />} path=":page" />
-          
         </Routes>
-      </Layout> */}
+      </Layout>
+      {/* )} */}
     </BrowserRouter>
   );
 }
