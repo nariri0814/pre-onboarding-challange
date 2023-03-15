@@ -1,24 +1,8 @@
-import { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./components/layout";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import { RouterProvider } from "react-router-dom";
+import { routers } from "./router";
 
 function App() {
-  const [isLogged, setIsLogged] = useState(false);
-  return (
-    <BrowserRouter>
-      {/* {!isLogged ? (
-        <Login setIsLogged={setIsLogged} />
-      ) : ( */}
-      <Layout>
-        <Routes>
-          <Route element={<Home />} path=":page" />
-        </Routes>
-      </Layout>
-      {/* )} */}
-    </BrowserRouter>
-  );
+  return <RouterProvider router={routers} />;
 }
 
 export default App;
