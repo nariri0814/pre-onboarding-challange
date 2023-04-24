@@ -1,4 +1,4 @@
-import { User } from "../types/user";
+import { Item, User } from "../types/user";
 import { BASE_URL } from "./const";
 
 type LoginResult = "success" | "fail";
@@ -29,4 +29,38 @@ export const getCurrentUserInfo = async (): Promise<User | null> => {
     },
   });
   return userInfo ? userInfo.json() : null;
+};
+
+export const getItems = async (): Promise<Item[] | null> => {
+  const itemRes = await fetch(`${BASE_URL}/items`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      credentials: "include",
+    },
+  });
+
+  return itemRes.ok ? itemRes.json() : null;
+};
+
+export const getAllItems = async (): Promise<Item[] | null> => {
+  const itemRes = await fetch(`${BASE_URL}/all-items`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      credentials: "include",
+    },
+  });
+
+  return itemRes.ok ? itemRes.json() : null;
+};
+
+export const logout = async (): Promise<void> => {
+  await fetch(`${BASE_URL}/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      credentials: "include",
+    },
+  });
 };

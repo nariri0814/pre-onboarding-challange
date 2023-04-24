@@ -1,14 +1,15 @@
 import { getCurrentUserInfo, login } from "../api/login";
 import { useRouter } from "../hooks/useRouter";
 
-const isLoggedIn = async (): Promise<boolean> => {
-  // 이미 로그인된 유저인지 판별
-  const userProfileRes = await getCurrentUserInfo();
-  return userProfileRes ? true : false;
-};
-
 const Login = () => {
   const { routeTo } = useRouter();
+
+  const isLoggedIn = async (): Promise<boolean> => {
+    // 이미 로그인된 유저인지 판별
+    const userProfileRes = await getCurrentUserInfo();
+    return userProfileRes !== null;
+  };
+
   const loginSubmitHandler = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
@@ -16,7 +17,9 @@ const Login = () => {
     // FormData를 이용해서 로그인 시도
     const formData = new FormData(event.currentTarget);
 
-    if (!isLoggedIn) {
+    const isUserLoggedIn: boolean = await isLoggedIn();
+
+    if (isUserLoggedIn) {
       routeTo("/page-a");
       return;
     }

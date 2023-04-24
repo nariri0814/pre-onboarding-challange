@@ -9,15 +9,27 @@ import PageB from "./pages/PageB";
 import PageC from "./pages/PageC";
 
 import { SidebarElement } from "./types/sidebar";
+import AdminPage from "./pages/AdminPage";
 
-interface RouterElement {
+interface RouterBase {
   id: number;
   path: string;
   label: string;
   element: React.ReactNode;
+}
+
+interface UserAccessibleRouterElement extends RouterBase {
   withAuth?: boolean;
 }
-const routerData: RouterElement[] = [
+
+interface AdminAccesibleRouterElement extends RouterBase {
+  withAuth: true;
+  isAdminPage?: boolean;
+}
+
+type RouterElemnet = UserAccessibleRouterElement | AdminAccesibleRouterElement;
+
+const routerData: RouterElemnet[] = [
   {
     id: 0,
     path: "/",
@@ -53,15 +65,29 @@ const routerData: RouterElement[] = [
     element: <PageC />,
     withAuth: true,
   },
+  {
+    id: 5,
+    path: "/admin",
+    label: "어드민 페이지",
+    element: <AdminPage />,
+    withAuth: true,
+    isAdminPage: true,
+  },
 ];
 
 // 인증이 필요한 페이지들은 layout으로 감싸서 전달
 export const routers: RemixRouter = createBrowserRouter(
-  routerData.map((router: RouterElement) => {
+  routerData.map((router) => {
     if (router.withAuth) {
       return {
         path: router.path,
-        element: <GeneralLayout>{router.element}</GeneralLayout>,
+        element: (
+          <GeneralLayout
+            isAdminPage={"isAdminPage" in router && router.isAdminPage}
+          >
+            {router.element}
+          </GeneralLayout>
+        ),
       };
     } else {
       return {
@@ -82,6 +108,7 @@ export const SidebarContent: SidebarElement[] = routerData.reduce(
         id: router.id,
         path: router.path,
         label: router.label,
+        isAdminOnly: "isAdminPage" in router && router.isAdminPage,
       },
     ];
   },
